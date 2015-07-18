@@ -42,3 +42,17 @@ type PlayerMessageOutbound struct {
   Message string `json:"message"`
 }
 
+//struct containing a user's info
+type UserInfoOutbound struct {
+  Id int `json:"id"`
+  User_name string `json:"user_name"`
+  First_name string `json:"first_name"`
+  Last_name string `json:"last_name"`
+  Bio string `json:"bio"`
+  Rep int `json:"rep"`
+  Avatar_link string `json:"avatar_link"`
+}
+
+
+
+
