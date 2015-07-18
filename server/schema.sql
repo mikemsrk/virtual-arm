@@ -31,3 +31,12 @@ CREATE TABLE user_threads (
   PRIMARY KEY (thread_id),
   FOREIGN KEY (creator_user_id) REFERENCES users(id)
 );
+
+CREATE TABLE user_uploads (
+  id int(10) NOT NULL auto_increment,
+  uid int(10) NOT NULL,
+  file_name VARCHAR(25) DEFAULT '',  
+  file_path VARCHAR(25) DEFAULT '',  
+
+  PRIMARY KEY (id),
+);
