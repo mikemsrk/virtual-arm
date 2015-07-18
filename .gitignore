@@ -3,3 +3,4 @@ node_modules
 bower_components
 .smbdelete*
 ./client
+/client/webvr-kit/examples/assets

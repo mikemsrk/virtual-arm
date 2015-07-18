@@ -48,6 +48,7 @@ var routes = (
     <Route path="signup" handler={Signup}/>
     <Route path="game" handler={Game} onEnter={requireAuth()}/>
     <Route path="vr" handler={Environment}/>
+    <Route path="gallery" handler={Gallery}/>
   </Route>
 );
 
