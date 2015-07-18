@@ -8,7 +8,6 @@ import (
   "log"
   "strconv"
   //"encoding/json"
-  //"time"
 )
 
 
@@ -49,6 +48,7 @@ type Player struct {
 }
 
 //function to parse a message that a client sends
+//and call the handleEvent function to perform an action based on the parsed message
 func parseMessage(message string, player *Player) {
   splitMessage := strings.SplitN(message, ":", 2)
   eventName := splitMessage[0]
@@ -64,8 +64,9 @@ func (player *Player) reader() {
           break
       }
       //fmt.Println(string(message))
-      //time.Sleep(5000 * time.Millisecond)
-      parseMessage(string(message), player)
+
+      //create a goroutine to parse the message and perform an action based on the parsed message
+      go parseMessage(string(message), player)
   }
   player.Ws.Close()
 }
@@ -120,7 +121,7 @@ func (playerHandler PlayerHandler) createPlayer(w http.ResponseWriter, r *http.R
   fmt.Println("Created player " + strconv.Itoa(player.Id) + " in room " + strconv.Itoa(player.Room.Id))
 
   defer func() { player.Room.Unregister <- player }()
-  go player.writer()
+  go player.writer() //perform writes asynchronously
   player.reader()
 }
 

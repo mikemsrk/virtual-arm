@@ -50,6 +50,16 @@ func main() {
     createUserHandler(w, r, db)
   })    
 
+  //update user info
+  http.HandleFunc("/updateUserInfo", func(w http.ResponseWriter, r *http.Request) {
+    updateUserInfoHandler(w, r, db, store)
+  })
+
+  //get user info
+  http.HandleFunc("/getUserInfo", func(w http.ResponseWriter, r *http.Request) {
+    getUserInfoHandler(w, r, db, store)
+  })
+
   //authenticate user
   http.HandleFunc("/authenticate", func(w http.ResponseWriter, r *http.Request) {
     loginHandler(w, r, db, store)
@@ -95,7 +105,7 @@ func connect(w http.ResponseWriter, r *http.Request, room *GameRoom, store *sess
     fmt.Fprint(w, "No flash messages")
     return
   }
-  session.Save(r, w)
+  //session.Save(r, w)
 
   fmt.Println("New user connected")
 
