@@ -31,7 +31,25 @@ gulp.task('browserify', function(){
 
 });
 
+gulp.task('testbuild', function() {
+  var b = browserify();
+  b.transform(reactify); // use the reactify transform
+  b.add('./src/gallery/testapp.js');
+  return b.bundle()
+    .pipe(source('testapp.js'))
+    .pipe(rename('testapp.built.js'))
+    .pipe(gulp.dest('./build'));
 
-gulp.task('build', ['browserify'], function() {
+});
+
+gulp.task('watch', ['browserify'], function() {
+  gulp.watch([
+    './src/gallery/components/**/*.jsx', 
+    './src/gallery/actions/**/*.js', 
+    './src/gallery/constants/**/*.js', 
+    './src/gallery/stores/**/*.js', 
+    './src/gallery/**/*.js',
+    './src/gallery/gallery.js'
+  ], ['browserify']);
 
 });

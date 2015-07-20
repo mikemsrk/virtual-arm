@@ -98,6 +98,8 @@ var Navbar = React.createClass({
               </ul>
             </li>
 
+            <li><Link to="/gallery">Gallery</Link></li>
+
             <li><Link to="/signup">Register</Link></li>
 
             {this.state.loggedIn ? (
