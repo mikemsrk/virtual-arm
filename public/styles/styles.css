@@ -128,6 +128,7 @@ div .chatBox{
 }
 
 .gallery-main-row {
+  width: 90%;
   border-radius: 1 solid black;
 }
 
