@@ -5,6 +5,7 @@ var AddItem = require('./components/addItem')
 var GalleryStore = require('./stores/galleryStore')
 var GalleryAction = require("./actions/galleryActions")
 
+
 var Gallery = React.createClass({
   
 	getInitialState: function(){

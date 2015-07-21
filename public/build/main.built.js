@@ -23968,14 +23968,23 @@ var AddItem = React.createClass({displayName: "AddItem",
 		    req.attach(file.name, file);
 		});
 		req.end(function(end, err){
-			console.log("sending finish...")
+			console.log("sending finish...", end, err)
 		});
+	},
+	photosubmit: function(e){
+
+
+
 	},
 
 	render: function(){
 		return (
 			React.createElement("div", {class: "col-xs-4 gallery-item-submit-btn"}, 
 				React.createElement("input", {type: "text", className: "form-control", placeholder: "New Item", onKeyDown: this.handleSubmit}), 
+				React.createElement("form", {encType: "multipart/form-data", action: "/galleryp", method: "post"}, 
+				  React.createElement("input", {type: "file", name: "fileTag"}), 
+				  React.createElement("input", {type: "submit", value: "upload", onClick: this.photosubmit})
+				), 
 				React.createElement(Dropzone, {onDrop: this.onDrop}, 
             React.createElement("div", null, "Try dropping some files here, or click to select files to upload.")
         )
@@ -23985,6 +23994,14 @@ var AddItem = React.createClass({displayName: "AddItem",
 })
 
 module.exports = AddItem;
+
+/*
+
+				<form encType="multipart/form-data" action="/galleryp" method="post"> 
+				  <input type="file" name="fileTag" /> 
+				  <input type="submit" value="upload" /> 
+				</form> 
+*/
 
 
 },{"react":166,"react-dropzone":11,"superagent":167}],174:[function(require,module,exports){
@@ -24059,6 +24076,8 @@ var GalleryItem = require('./components/galleryItem')
 var AddItem = require('./components/addItem')
 var GalleryStore = require('./stores/galleryStore')
 var GalleryAction = require("./actions/galleryActions")
+// var FileForm = require("./components/fileForm")
+
 
 var Gallery = React.createClass({displayName: "Gallery",
   
