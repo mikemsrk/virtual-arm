@@ -11,7 +11,8 @@ import (
   //"html/template"   
   "database/sql"
   _ "github.com/go-sql-driver/mysql" 
-  "github.com/gorilla/sessions"   
+  "github.com/gorilla/sessions"
+  // "io/ioutil"   
 )
 
 //"constant" variables to be used throughout the program
@@ -69,6 +70,12 @@ func main() {
   http.HandleFunc("/connect", func(w http.ResponseWriter, r *http.Request) {
     fmt.Println("trying to connect websocket")
     connect(w, r, room, store)
+  })
+
+  //Post Photo
+  http.HandleFunc("/galleryp", func(w http.ResponseWriter, r *http.Request) {
+    fmt.Println("Trying to post photo URL", r.URL.Path, r.Method)
+    handleGalleryPost(w, r, db)
   })
 
   //listen on specified port

@@ -110,3 +110,50 @@ div .chatBox{
   margin:0;
   padding:0;
 }
+
+.col-centered{
+  width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.removeGlyphicon {
+  font-size: 20;
+  float: left;
+  position: "absolute";
+  top: 12;
+  left: 6;
+  cursor: pointer;
+  color: rgb(222, 79, 79);
+
+}
+
+.gallery-main-row {
+  width: 90%;
+  border-radius: 1 solid black;
+}
+
+.gallery-items-row{
+
+  border: 1 solid black;
+  background-color: red;
+}
+
+.gallery-itemlist-row {
+  width: 70%;
+  display:block;
+  margin-left: auto;
+  margin-right: auto;
+  margin: center;
+  border: 2 solid black;
+  background-color: gray;
+
+}
+
+.gallery-item-submit-btn {
+  width: 80%;
+}
+
+.gallery-item-photo {
+  width: 20%;
+}
+
