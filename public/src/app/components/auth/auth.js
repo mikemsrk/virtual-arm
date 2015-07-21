@@ -73,17 +73,18 @@ var Auth = {
     var that = this;
 
     if (this.loggedIn()) {
-      // console.log('already logged in');
-      // if (callback) {
-      //   callback(true);
-      // }
-      // this.onChange(true);
-      // return;
+      console.log('already logged in');
+      if (callback) {
+        callback(true);
+      }
+      this.onChange(true);
+      return;
     }
     authenticateUser(username, pass, (function(res) {
         var authenticated = false;
         if (res.authenticated) {
           console.log('login successful');
+          localStorage.token = res.token;
           authenticated = true;
         }
         if (callback) {
@@ -96,16 +97,17 @@ var Auth = {
     var that = this;
     
     if (this.loggedIn()) {
-      // if (callback) {
-      //   callback(true);
-      // }
-      // this.onChange(true);
-      // return;
+      if (callback) {
+        callback(true);
+      }
+      this.onChange(true);
+      return;
     }
     createUser(username, password, firstname, lastname, function(res) {
         var authenticated = false;
         if (res.authenticated) {
           console.log('signup and login successful!');
+          localStorage.token = res.token;
           authenticated = true;
         }
         if (callback) {
@@ -114,8 +116,11 @@ var Auth = {
         that.onChange(authenticated);
     });
   },
-
+  getToken: function() {
+    return localStorage.token;
+  },
   logout: function(callback) {
+    delete localStorage.token;
     deleteAllCookies();
 
     function deleteAllCookies() {
@@ -134,22 +139,8 @@ var Auth = {
     }
     this.onChange(false);
   },
-
   loggedIn: function() {
-    // check the flash session cookie
-    var good = false;
-    var cookies = document.cookie.split(";");
-
-    for (var i = 0; i < cookies.length; i++) {
-      var cookie = cookies[i];
-      var eqPos = cookie.indexOf("flash-session=");
-      if(eqPos > -1) good = true;
-    }
-
-    return good;
+    return !!localStorage.token;
   },
-
   onChange: function() {}
 };
-
-module.exports = Auth;

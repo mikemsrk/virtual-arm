@@ -1,4 +1,39 @@
-var React = require('react');
+var Signup = React.createClass({
+  getInitialState: function(){
+    return {
+      error: false,
+      loggedIn: Auth.loggedIn()
+    };
+  },
+  handleSignupSubmit: function(user){
+    var that = this;
+    if(user.error){
+      this.handleError(user.error);
+      return;
+    }
+    Auth.signup(user.username,user.password,user.firstname,user.lastname,function(authenticated){
+      if(authenticated){
+        // redirect to game
+        location.hash = '/';
+      }else{
+        // TODO: Display warning message - no go
+        return that.setState({ error: true });
+      }
+    });
+  },
+  handleError: function(err){
+    return this.setState({ error: true });
+  },
+  render: function() {
+    return (
+      <div className="Auth center-block">
+        <h2>Sign up</h2>
+          <SignupForm onSignupSubmit={this.handleSignupSubmit}/>
+          {this.state.error && (<p className="error">Bad signup information</p>)}
+      </div>
+    );
+  }
+});
 
 var SignupForm = React.createClass({
   handleSubmit: function(e){
@@ -16,9 +51,8 @@ var SignupForm = React.createClass({
     if(passconf !== password){
       error = true;
     }
-    // Bubble this up to parent
+    // TODO: send request to server
     this.props.onSignupSubmit({firstname: firstname, lastname: lastname, username: username, password: password, error: error});
-    
     React.findDOMNode(this.refs.firstname).value = '';
     React.findDOMNode(this.refs.lastname).value = '';
     React.findDOMNode(this.refs.username).value = '';
@@ -41,5 +75,3 @@ var SignupForm = React.createClass({
     );
   }
 });
-
-module.exports = SignupForm;

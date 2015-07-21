@@ -1,39 +1,27 @@
-var React = require('react');
-var Router = require('react-router');
-var AuthActions = require('../../actions/AuthActions');
-var AuthStore = require('../../stores/AuthStore');
-var Link = Router.Link;
-
-// TODO - factor out navbar login form
-
 var Navbar = React.createClass({
 
   getInitialState: function(){
     return {
-      loggedIn: AuthStore.loggedIn()
+      loggedIn: Auth.loggedIn()
     };
+  },
+  setStateOnAuth: function(loggedIn){
+    this.setState({
+      loggedIn: loggedIn
+    });
   },
 
   componentWillMount: function(){
-    // _onChange is cb function.
-    AuthStore.addChangeListener(this._onChange);
-  },
-
-  componentWillUnmount: function(){
-    AuthStore.removeChangeListener(this._onChange);
-  },
-
-  _onChange: function(){
-    this.setState({
-      loggedIn: AuthStore.loggedIn()
-    });
-    if(this.state.loggedIn){
-      location.hash = '/';
-    }
+    Auth.onChange = this.setStateOnAuth;
   },
 
   navlogout: function(){
-    AuthActions.logout();
+    Auth.logout(function(){
+      location.hash = '/login';
+    });
+    this.setState({
+      loggedIn: false
+    });
   },
 
   handleSubmit: function(e){
@@ -51,7 +39,16 @@ var Navbar = React.createClass({
   },
 
   handleLoginSubmit: function(user){
-    AuthActions.login({username:user.username,pass:user.password});
+    var that = this;
+    Auth.login(user.username,user.password,function(authenticated){
+      if(authenticated){
+        // TODO: redirect to game
+        // location.hash = '/game';
+      }else{
+        // TODO: Display warning message - no go
+        return that.setState({ error: true });
+      }
+    });
   },
 
   render: function(){
@@ -66,7 +63,7 @@ var Navbar = React.createClass({
             <span className="icon-bar"></span>
             <span className="icon-bar"></span>
           </button>
-          <a className="navbar-brand" href="#">App</a>
+          <a className="navbar-brand" href="#">BSun VR</a>
         </div>
         
         <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -100,11 +97,10 @@ var Navbar = React.createClass({
                 <li><a href="#">One more separated link</a></li>
               </ul>
             </li>
-            {this.state.loggedIn ? (
-              null
-            ) : (
-              <li><Link to="/signup">Register</Link></li>
-            )}
+
+            <li><Link to="/gallery">Gallery</Link></li>
+
+            <li><Link to="/signup">Register</Link></li>
 
             {this.state.loggedIn ? (
               <li><Link to="/profile">Profile</Link></li>
@@ -119,6 +115,5 @@ var Navbar = React.createClass({
     </nav>
     )
   }
-});
 
-module.exports = Navbar;
+});

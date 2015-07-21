@@ -1,43 +1,28 @@
-var React = require('react');
-var Router = require('react-router');
-
-var Navbar = require('./components/navbar/navbar');
-var Profile = require('./components/profile/profile');
-var Front = require('./components/front/front');
-var Login = require('./components/login/login');
-var Logout = require('./components/logout/logout');
-var Signup = require('./components/signup/signup');
-var NewThread = require('./components/thread/new');
-var Thread = require('./components/thread/thread');
-var User = require('./components/user/user');
-
-var Route = Router.Route;
+var Router = window.ReactRouter;
 var DefaultRoute = Router.DefaultRoute;
+var Route = ReactRouter.Route;
 var RouteHandler = Router.RouteHandler;
 var Navigation = Router.Navigation;
-var Link = Router.Link;
+
+var Link = ReactRouter.Link;
 
 var App = React.createClass({
-
   getInitialState: function(){
     return {
-      // loggedIn: Auth.loggedIn()
+      loggedIn: Auth.loggedIn()
     };
   },
-
   setStateOnAuth: function(loggedIn){
-    // this.setState({
-    //   loggedIn: loggedIn
-    // });
+    this.setState({
+      loggedIn: loggedIn
+    });
   },
-
   componentWillMount: function(){
-    // Auth.onChange = this.setStateOnAuth;
+    Auth.onChange = this.setStateOnAuth;
   },
-  
   render: function(){
     return (
-      <div className="container-fluid">
+      <div>
         <Navbar/>
         <RouteHandler/>
       </div>
@@ -45,26 +30,33 @@ var App = React.createClass({
   }
 });
 
-// TODO: Setup thread routes
+// Currently does not work.
+function requireAuth(nextState, transition) {
+  if (!Auth.loggedIn()){
+    // TODO: stop transition or transition backto login.
+    // transition.to('/login', null, { nextPathname: nextState.location.pathname });
+    location.hash = '/login';
+  }
+}
+
 var routes = (
   <Route path="/" handler={App}>
-    <DefaultRoute handler={Front}/>
+    <DefaultRoute path="main" handler={Main}/>
     <Route path="profile" handler={Profile}/>
     <Route path="login" handler={Login}/>
     <Route path="logout" handler={Logout}/>
     <Route path="signup" handler={Signup}/>
-    <Route path="new" handler={NewThread}/>
-    <Route path="thread/:id" handler={Thread}/>
-    <Route path="user/:id" handler={User}/>
+    <Route path="game" handler={Game} onEnter={requireAuth()}/>
+    <Route path="vr" handler={Environment}/>
+    <Route path="gallery" handler={Gallery}/>
   </Route>
 );
 
-
 Router.run(routes, Router.HashLocation, function(Root){
-  React.render(
-    <Root locales={['en-US']}/>,
-    document.getElementById('app')
-  );
+  React.render(<Root/>, document.getElementById('content'));
 });
-	
-module.exports = App;
+
+// React.render(
+//   <Login />,
+//   document.getElementById('content')
+// );
